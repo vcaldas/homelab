@@ -1,6 +1,7 @@
 # Local .terraform directories
 .terraform/
-
+.env
+secrets.yaml
 # .tfstate files
 *.tfstate
 *.tfstate.*
@@ -36,3 +37,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 .vault_password
+secrets
+mynotes.md
