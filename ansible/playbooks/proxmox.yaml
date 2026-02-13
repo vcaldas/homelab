@@ -1,0 +1,58 @@
+
+- name: Deploy VM templates
+  hosts: proxmox_hosts
+
+
+  tasks:
+    - name: Import variables
+      ansible.builtin.include_vars:
+        dir: ../vars
+    
+    - name: Baseline hosts
+      ansible.builtin.include_role:
+        name: ../roles/server_baseline
+      vars:
+        server_baseline_created_username: vcaldas
+        server_baseline_tailscale_oauth_client_secret: "{{ tailscale_servers_oauth_client['key'] }}"
+        server_baseline_timezone: Europe/Amsterdam
+        server_baseline_proxmox_packages:
+          - tmux
+          - ncdu
+
+    - name: Deploy templates with proxmox_template_vm
+      
+      ansible.builtin.include_role:
+        name: ../roles/proxmox_template_vm
+      vars: 
+        # Required to provide at least one
+        proxmox_template_vm_distros:
+          - ubuntu
+          - debian
+
+        # Required proxmox credentials
+        proxmox_template_vm_proxmox_username: "{{ proxmox_username }}" # From Ansible vault
+        proxmox_template_vm_proxmox_api_token_id: "{{ proxmox_api_token_id }}" # From Ansible vault
+        proxmox_template_vm_proxmox_api_token_secret: "{{ proxmox_api_token_secret }}" # From Ansible vault
+        
+        # Optional customizations for ubuntu
+        proxmox_template_vm_ubuntu_storage: "local-lvm"
+        proxmox_template_vm_ubuntu_name: ubuntu-2604-template
+        proxmox_template_vm_ubuntu_memory: 4096
+        proxmox_template_vm_ubuntu_cores: 1
+        proxmox_template_vm_ubuntu_ciuser: vcaldas
+        proxmox_template_vm_ubuntu_cipassword: "{{ cipassword }}" # From Ansible vault
+        proxmox_template_vm_ubuntu_sshkeys: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}" # gets your ssh key from /home/user/.ssh/id_rsa.pub -- customize this to your needs
+        # proxmox_template_vm_ubuntu_vlan: 50
+
+         # Optional customizations for Debian
+        proxmox_template_vm_debian_storage: "local-lvm"
+        proxmox_template_vm_debian_name: debian-template
+        proxmox_template_vm_debian_memory: 4096
+        proxmox_template_vm_debian_cores: 1
+        proxmox_template_vm_debian_ciuser: vcaldas
+        proxmox_template_vm_debian_cipassword: "{{ cipassword }}" # From Ansible vault
+        proxmox_template_vm_debian_sshkeys: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}" # gets your ssh key from /home/user/.ssh/id_rsa.pub -- customize this to your needs
+        # proxmox_template_vm_debian_vlan: 50
+
+        # Set to true if you have slow storage to avoid file locks
+        proxmox_template_vm_slow_storage: true
