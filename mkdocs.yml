@@ -2,3 +2,15 @@ site_name: Home Lab Documentation
 
 theme:
   name: material
+
+nav:
+  - Home: README.md
+  - Ansible:
+    - Playbooks:
+      - Proxmox: proxmox.md
+    - Roles:
+      - Server Baseline: roles/server_baseline.md
+      - Proxmox Template VM: roles/proxmox_template_vm.md
+  - Infrastructure:
+    - VLANs: vlans.md
+    - Sudoers Setup: setup_sudoers.md

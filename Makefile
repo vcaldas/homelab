@@ -6,3 +6,6 @@ ADDR := $(HOST):$(PORT)
 .PHONY: serve
 serve:
 	mkdocs serve --dev-addr=$(ADDR) --livereload
+
+deploy:
+	mkdocs gh-deploy 
