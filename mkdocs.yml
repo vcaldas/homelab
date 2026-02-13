@@ -1,5 +1,7 @@
 site_name: Home Lab Documentation
 
+repo_url: https://github.com/vcaldas/homelab
+repo_name: Homelab
 theme:
   name: material
 
