@@ -1,0 +1,56 @@
+---
+- name: Remove conflicting Tailscale apt sources
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/tailscale.list
+    - /etc/apt/sources.list.d/tailscale.sources
+  become: true
+  ignore_errors: true
+
+- name: Update apt and install default system packages
+  apt:
+    pkg: "{{ server_baseline_proxmox_packages_default }}"
+    state: latest
+    update_cache: true
+  become: true
+
+- name: Update apt and install additional system packages
+  apt:
+    pkg: "{{ server_baseline_proxmox_packages }}"
+    state: latest
+  become: true
+  when: proxmox_baseline_packages is defined
+
+- name: Set authorized key for root user
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ server_baseline_ssh_key }}"
+  become: true
+
+- name: Disable SSH password auth
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^#PasswordAuthentication yes"
+    line: "PasswordAuthentication no"
+  notify:
+    - Restart SSH
+  become: true
+  
+- name: Set time zone
+  become: true
+  community.general.timezone:
+    name: "{{ server_baseline_timezone }}"
+
+- name: Install and bring up Tailscale
+  ansible.builtin.include_role:
+    name: artis3n.tailscale.machine
+  vars:
+    verbose: true
+    tailscale_authkey: "{{ server_baseline_tailscale_oauth_client_secret }}"
+    tailscale_tags:
+      - "servers"
+    tailscale_oauth_ephemeral: false
+    tailscale_oauth_preauthorized: true

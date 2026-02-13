@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  author: Victor Caldas
+
+  description: Deploys VM templates to Proxmox nodes/cluster
+
+  license: MIT
+
+  min_ansible_version: 2.16.9
+
+  galaxy_tags:
+    - homelab
+    - tailscale
+    - ubuntu
+    - fedora
+    - debian
+    - infrastructure
+    - linux
+    - baseline
+    - proxmox
+
+dependencies: []
+...
