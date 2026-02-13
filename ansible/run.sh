@@ -1,6 +1,6 @@
 
 #!/bin/bash
-source ./vars.sh
+source ./secrets.sh
 
 # Ensure SSH key exists
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then

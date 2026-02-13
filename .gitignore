@@ -1,11 +1,11 @@
 # Local .terraform directories
 .terraform/
 .env
-secrets.yaml
+secrets.*
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
 # Crash log files
 crash.log
 crash.*.log
