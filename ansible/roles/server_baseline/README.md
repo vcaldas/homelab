@@ -176,3 +176,10 @@ Author Information
 
 Josh Noll 
 https://joshrnoll.com
+
+
+Further notes
+-------------
+
+The original work of this role is based on the server_baseline module from the community.general collection. I have added a lot of custom functionality and configuration options to make it fit my use case and to help me learn Ansilble. If you want the real deal, check out the original module here: https://docs.ansible.com/ansible/latest/collections/community/general/server_baseline.html
+The code here might have diverged significantly from the original module, but I am grateful for the work that was done by the maintainers of the community.general collection to create the server_baseline module which made this role possible.

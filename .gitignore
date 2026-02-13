@@ -2,7 +2,7 @@
 .terraform/
 .env
 secrets.*
-
+site/
 # .tfstate files
 *.tfstate
 *.tfstate.*
